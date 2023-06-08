@@ -4,7 +4,11 @@
 
  This project is a guide for using Raspberry Pi 4, Ubuntu 22.04 (aarch64) and Google Coral USB. 
 
- I followed Google's instructions, but I was able to use Coral USB without any major problems only on my PC (amd64/ubuntu 20.04). However, on Raspberry Pi 4's ubuntu 22.04 aarch64, the build failed or did not work normally even after being built. - Including native/cross/docker/colab. On Raspberry Pi 4, all operations were confirmed only on 32bit Debian Buster, and I wasted too much time due to various problems. I hope this page helps users who have been struggling as me.
+ I followed Google's instructions, I was able to use Coral USB without any major problems but only on my PC (amd64/ubuntu 20.04).  With Raspberry Pi 4 and ubuntu 22.04 aarch64, the build goes to failure or the result binary even after being built did not work normally from the ways of compiling including native / cross / docker / colab. 
+
+On Raspberry Pi 4, all operations were going well only on 32bit Debian Buster, and I wasted too much time for trying to use tpu on other 64bit OS.
+
+I hope this page helps users who have been struggling as me.
 
 ----------
 ### 1. Prerequisite
@@ -190,18 +194,44 @@ Misc.
 
 ### 5. Running example / cpp
 
+* classification
+``` bash
+	cd coral/tflite/cpp/examples/classification
+	make
+	./run_tpu.sh # or run.sh : cpu
+```
 
-
-
-
-
+* lstpu
+``` bash
+	cd coral/tflite/cpp/examples/lstpu
+	./build.sh
+	./lstpu
+```
 
 ***
 
 ### 6. Running example / python
+You should activate virtual environment before starting example.
+``` bash
+	pyenv activate v3.9.16
+```
+* classification
+``` bash
+	cd coral/tflite/python/examples/classification
+	python3 classify_image.py  \
+  --model	models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite \
+  --labels models/inat_bird_labels.txt \
+  --input images/parrot.jpg
+```
 
+* detection 
 ***
-
+``` bash
+	cd coral/tflite/python/examples/detection
+	python3 detect_image.py \
+  --model models/ssd_mobilenet_v2_coco_quant_postprocess_edgetpu.tflite \
+  --labels models/coco_labels.txt   --input images/grace_hopper.bmp
+```
 
 
 ### 6. Trouble shooting
